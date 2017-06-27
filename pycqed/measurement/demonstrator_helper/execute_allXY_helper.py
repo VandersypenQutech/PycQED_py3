@@ -25,16 +25,17 @@ def execute_AllXY(options={}):
     st = station.Station()
 
     MC = mc.MeasurementControl(
-        'MC', live_plot_enabled=True, verbose=True)
+        'MC', live_plot_enabled_tess=True, verbose=True)
     MC.soft_avg(40)
     MC.station = st
+    MC.tess_connect = tc
     st.add_component(MC)
 
     defualt_simulate_options.update(options)
     options = defualt_simulate_options
 
     try:
-        MC.set_detector_function(AllXYDetector(noise=0.1, delay=0.2))
+        MC.set_detector_function(AllXYDetector(noise=0.3, delay=1))
         return_value = []
         for i in range(options["iterations"]):
             MC.set_sweep_function(swf.None_Sweep(sweep_control="hard"))

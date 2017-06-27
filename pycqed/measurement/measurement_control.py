@@ -210,6 +210,10 @@ class MeasurementControl(Instrument):
                     self.detector_function.prepare(
                         sweep_points=sweep_points_0[start_idx:stop_idx])
                     self.measure_hard()
+                    if(self.live_plot_enabled_tess()):
+                        if(self.tess_connect):
+                            data = self.create_experiment_result_dict()
+                            self.tess_connect.update_task_result(data)
         else:
             raise Exception('Sweep and Detector functions not '
                             + 'of the same type. \nAborting measurement')
@@ -273,7 +277,6 @@ class MeasurementControl(Instrument):
 
     def measure_hard(self):
         new_data = np.array(self.detector_function.get_values()).T
-
         ###########################
         # Shape determining block #
         ###########################

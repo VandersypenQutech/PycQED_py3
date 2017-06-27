@@ -23,6 +23,7 @@ defualt_simulate_options = {
 
 def simulate_qasm_file(file_url, options={}):
     # file_url="uploads/asset/file/65/f27d92be-8505-43dc-af7d-4c395c70aaf9.qasm"
+    print("SIMULATE")
     file_path = _retrieve_file_from_url(file_url)
 
     # Connect to the qx simulator
