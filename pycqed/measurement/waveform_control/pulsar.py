@@ -64,7 +64,8 @@ class Pulsar(Instrument):
         self.last_elements = None
 
         self._clock_prequeried_state = False
-
+        self.debug={}
+        
     # channel handling
     def define_channel(self, id, name, type, delay, offset,
                        high, low, active, AWG=None):
@@ -401,8 +402,18 @@ class Pulsar(Instrument):
 
         if len(wfname_l) > 0:
             filename = sequence.name + '_FILE.AWG'
-            awg_file = obj.generate_awg_file(packed_waveforms,
+            self.debug['upload']=( packed_waveforms,
                                              np.array(wfname_l), nrep_l, wait_l,
+                                             goto_l, logic_jump_l,
+                                             self._AWG5014_chan_cfg(obj.name) )
+            self.debug['grps' ]=grps
+            self.debug['el_wfs' ]=el_wfs
+
+            
+            tmp=np.array(wfname_l)
+            tmp=np.hstack( (tmp, tmp[:,:1] ) )
+            awg_file = obj.generate_awg_file(packed_waveforms,
+                                             tmp, nrep_l, wait_l,
                                              goto_l, logic_jump_l,
                                              self._AWG5014_chan_cfg(obj.name))
             obj.send_awg_file(filename, awg_file)
